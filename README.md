@@ -46,5 +46,5 @@ Example
     database.write(batch);
 
     % Iterator.
-    database.each(@(key, value) disp([key, ':', 'value']));
+    database.each(@(key, value) disp([key, ': ', value]));
     count = database.reduce(@(key, value, count) count + 1, 0);
