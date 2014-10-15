@@ -11,7 +11,7 @@ MATLABDIR ?= /usr/local/matlab
 MATLAB := $(MATLABDIR)/bin/matlab
 MEX := $(MATLABDIR)/bin/mex
 MEXEXT := $(shell $(MATLABDIR)/bin/mexext)
-MEXFLAGS := -Iinclude -I$(LEVELDB_DIR)/include -L$(LEVELDB_DIR)
+MEXFLAGS := -Iinclude -I$(LEVELDB_DIR)/include
 TARGET := +leveldb/private/LevelDB_.$(MEXEXT)
 
 .PHONY: all test clean clean_all
@@ -19,7 +19,7 @@ TARGET := +leveldb/private/LevelDB_.$(MEXEXT)
 all: $(TARGET)
 
 $(TARGET): src/LevelDB_.cc $(LEVELDB_DIR)/libleveldb.a
-	$(MEX) -output $@ $< $(MEXFLAGS) -lleveldb
+	$(MEX) -output $@ $< $(MEXFLAGS) $(LEVELDB_DIR)/libleveldb.a
 
 $(LEVELDB_DIR)/libleveldb.a: $(LEVELDB_DIR)
 	make -C $(LEVELDB_DIR)
