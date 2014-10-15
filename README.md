@@ -1,30 +1,22 @@
 Matlab LevelDB
 ==============
 
-Matlab LevelDB wrapper.
+Matlab LevelDB wrapper designed for UNIX environment.
 
 The implementation is based on [mexplus](http://github.com/kyamagu/mexplus).
 
-Prerequisite
-------------
-
  * [LevelDB](https://code.google.com/p/leveldb/)
-
-You may install LevelDB via a package manager, such as `apt-get`.
 
 Build
 -----
 
     addpath /path/to/matlab-leveldb;
     leveldb.make();
-
-To specify optional build flags:
-
-    leveldb.make('all', '-I/opt/local/include -L/opt/local/lib');
-
-Run a test:
-
     leveldb.make('test');
+
+The `leveldb.make()` function internally calls GNU Make. By default, the build
+process automatically downloads a leveldb source package from GitHub. Edit
+`Makefile` to customize the build process.
 
 Example
 -------
