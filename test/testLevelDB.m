@@ -1,6 +1,6 @@
 function testLevelDB
 %TESTLEVELDB Test the functionality of LevelDB wrapper.
-
+  addpath(fileparts(fileparts(mfilename('fullpath'))));
   % Using a database object.
   database = leveldb.DB('_testdb');
   value = database.get('some-key');
@@ -23,5 +23,6 @@ function testLevelDB
   if exist('_testdb', 'dir')
     rmdir('_testdb', 's');
   end
+  fprintf('SUCCESS\n');
 
 end

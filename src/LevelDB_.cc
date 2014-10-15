@@ -1,9 +1,9 @@
 /** LevelDB Matlab wrapper.
  */
-#include <mexplus.h>
 #include <leveldb/db.h>
 #include <leveldb/write_batch.h>
 #include <memory>
+#include <mexplus.h>
 
 using namespace std;
 using namespace mexplus;
