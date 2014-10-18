@@ -7,6 +7,8 @@ The implementation is based on [mexplus](http://github.com/kyamagu/mexplus).
 
  * [LevelDB](https://code.google.com/p/leveldb/)
 
+See also [matlab-lmdb](http://github.com/kyamagu/matlab-lmdb).
+
 Build
 -----
 
