@@ -12,6 +12,13 @@ See also [matlab-lmdb](http://github.com/kyamagu/matlab-lmdb).
 Build
 -----
 
+As a prerequisite, LevelDB must be installed. In Linux, install via a package
+manager, e.g.,
+
+    apt-get install libleveldb-dev
+
+Launch Matlab and do the following.
+
     addpath /path/to/matlab-leveldb;
     leveldb.make();
     leveldb.make('test');
