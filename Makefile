@@ -11,7 +11,7 @@ MATLABDIR ?= /usr/local/matlab
 MATLAB := $(MATLABDIR)/bin/matlab
 MEX := $(MATLABDIR)/bin/mex
 MEXEXT := $(shell $(MATLABDIR)/bin/mexext)
-MEXFLAGS := -Iinclude -I$(LEVELDB_DIR)/include
+MEXFLAGS := -Iinclude -I$(LEVELDB_DIR)/include CXXFLAGS="\$$CXXFLAGS -std=c++11"
 TARGET := +leveldb/private/LevelDB_.$(MEXEXT)
 
 .PHONY: all test clean clean_all
