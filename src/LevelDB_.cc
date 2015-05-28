@@ -163,6 +163,36 @@ MEX_DEFINE(reduce) (int nlhs, mxArray* plhs[],
   output.set(0, accumulation.release());
 }
 
+MEX_DEFINE(keys) (int nlhs, mxArray* plhs[],
+                  int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::DB* database = Session<leveldb::DB>::get(input.get(0));
+  leveldb::ReadOptions options;
+  options.fill_cache = false;
+  unique_ptr<leveldb::Iterator> it(database->NewIterator(options));
+  vector<string> key_vector;
+  for (it->SeekToFirst(); it->Valid(); it->Next())
+    key_vector.push_back(it->key().ToString());
+  ASSERT(it->status().ok(), it->status().ToString().c_str());
+  output.set(0, MxArray::from(key_vector));
+}
+
+MEX_DEFINE(values) (int nlhs, mxArray* plhs[],
+                    int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::DB* database = Session<leveldb::DB>::get(input.get(0));
+  leveldb::ReadOptions options;
+  options.fill_cache = false;
+  unique_ptr<leveldb::Iterator> it(database->NewIterator(options));
+  vector<string> value_vector;
+  for (it->SeekToFirst(); it->Valid(); it->Next())
+    value_vector.push_back(it->value().ToString());
+  ASSERT(it->status().ok(), it->status().ToString().c_str());
+  output.set(0, MxArray::from(value_vector));
+}
+
 } // namespace
 
 MEX_DISPATCH

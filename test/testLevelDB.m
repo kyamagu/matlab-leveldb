@@ -19,10 +19,11 @@ function testLevelDB
   foo_counter = @(key, value, accum) accum + strcmp(value, 'foo');
   foo_count = database.reduce(foo_counter, 0);
   fprintf('Number of ''foo'': %d\n', foo_count);
+  disp(database.keys());
+  disp(database.values());
   clear database;
   if exist('_testdb', 'dir')
     rmdir('_testdb', 's');
   end
   fprintf('SUCCESS\n');
-
 end

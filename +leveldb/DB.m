@@ -111,6 +111,18 @@ methods
     assert(abs(nargin(func)) > 2 && abs(nargout(func)) > 0);
     result = LevelDB_('reduce', this.id_, func, initial_value);
   end
+
+  function result = keys(this)
+  %KEYS Get a cell array of all keys.
+    assert(isscalar(this));
+    result = LevelDB_('keys', this.id_);
+  end
+
+  function result = values(this)
+  %VALUES Get a cell array of all values.
+    assert(isscalar(this));
+    result = LevelDB_('values', this.id_);
+  end
 end
 
 end
