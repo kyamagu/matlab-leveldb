@@ -88,6 +88,20 @@ methods
     LevelDB_('write', this.id_, batch.id_, varargin{:});
   end
 
+  function it = iterator(this)
+  %ITERATOR Create a new iterator.
+  %
+  % it = database.iterator();
+  % while it.next()
+  %   key = it.key;
+  %   value = it.value;
+  % end
+  % clear it;
+  %
+  % See also leveldb.Iterator
+    it = leveldb.Iterator(this.id_);
+  end
+
   function each(this, func)
   %EACH Apply a function to each record.
   %

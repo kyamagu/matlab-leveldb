@@ -46,9 +46,16 @@ Example
     batch.put('key4', 'value4');
     database.write(batch);
 
-    % Iterator.
+    % High-level iterator.
     database.each(@(key, value) disp([key, ': ', value]));
     count = database.reduce(@(key, value, count) count + 1, 0);
+
+    % Low-level iterator.
+    it = database.iterator();
+    while it.next()
+      fprintf('%s: %s\n', it.key, it.value);
+    end
+    clear it;
 
     % Dump.
     keys = database.keys();

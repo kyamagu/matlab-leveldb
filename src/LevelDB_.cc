@@ -14,6 +14,7 @@ using namespace mexplus;
 // Instance manager for Database.
 template class mexplus::Session<leveldb::DB>;
 template class mexplus::Session<leveldb::WriteBatch>;
+template class mexplus::Session<leveldb::Iterator>;
 
 namespace {
 
@@ -191,6 +192,78 @@ MEX_DEFINE(values) (int nlhs, mxArray* plhs[],
     value_vector.push_back(it->value().ToString());
   ASSERT(it->status().ok(), it->status().ToString().c_str());
   output.set(0, MxArray::from(value_vector));
+}
+
+MEX_DEFINE(iterator_new) (int nlhs, mxArray* plhs[],
+                          int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::DB* database = Session<leveldb::DB>::get(input.get(0));
+  unique_ptr<leveldb::Iterator> it(
+      database->NewIterator(leveldb::ReadOptions()));
+  it->SeekToFirst();
+  output.set(0, Session<leveldb::Iterator>::create(it.release()));
+}
+
+MEX_DEFINE(iterator_delete) (int nlhs, mxArray* plhs[],
+                             int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 0);
+  Session<leveldb::Iterator>::destroy(input.get(0));
+}
+
+MEX_DEFINE(iterator_next) (int nlhs, mxArray* plhs[],
+                           int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::Iterator* it = Session<leveldb::Iterator>::get(input.get(0));
+  it->Next();
+  output.set(0, it->Valid());
+}
+
+MEX_DEFINE(iterator_previous) (int nlhs, mxArray* plhs[],
+                               int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::Iterator* it = Session<leveldb::Iterator>::get(input.get(0));
+  it->Prev();
+  output.set(0, it->Valid());
+}
+
+MEX_DEFINE(iterator_first) (int nlhs, mxArray* plhs[],
+                            int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::Iterator* it = Session<leveldb::Iterator>::get(input.get(0));
+  it->SeekToFirst();
+  output.set(0, it->Valid());
+}
+
+MEX_DEFINE(iterator_last) (int nlhs, mxArray* plhs[],
+                           int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::Iterator* it = Session<leveldb::Iterator>::get(input.get(0));
+  it->SeekToLast();
+  output.set(0, it->Valid());
+}
+
+MEX_DEFINE(iterator_key) (int nlhs, mxArray* plhs[],
+                          int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::Iterator* it = Session<leveldb::Iterator>::get(input.get(0));
+  ASSERT(it->Valid(), "Invalid iterator.");
+  output.set(0, it->key().ToString());
+}
+
+MEX_DEFINE(iterator_value) (int nlhs, mxArray* plhs[],
+                            int nrhs, const mxArray* prhs[]) {
+  InputArguments input(nrhs, prhs, 1);
+  OutputArguments output(nlhs, plhs, 1);
+  leveldb::Iterator* it = Session<leveldb::Iterator>::get(input.get(0));
+  ASSERT(it->Valid(), "Invalid iterator.");
+  output.set(0, it->value().ToString());
 }
 
 } // namespace
